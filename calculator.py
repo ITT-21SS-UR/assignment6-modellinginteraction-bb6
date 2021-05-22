@@ -1,19 +1,22 @@
 
 from PyQt5 import QtCore, QtGui, QtWidgets, uic
 import pandas as pd
+import sys
+
 
 
 # decorator function for logging to stdout
 # (not a very pretty implementation, but only thought of them when i was done with the rest)
 def decorator(func):
     def inner(*args, **kwargs):
-        if len(args) > 2:
-            print(args[2] + args[1])
+        if len(args) > 3:
+            sys.stdout.write(args[2] + args[1] + ", " + args[3]  + "\n")
         else:
-            print(args[1])
+            sys.stdout.write(args[1] + ", " + args[2]+ "\n")
         func(*args, **kwargs)
 
     return inner
+
 
 
 class UI(QtWidgets.QMainWindow):
@@ -23,33 +26,38 @@ class UI(QtWidgets.QMainWindow):
         super(UI, self).__init__()
         self.ui = uic.loadUi("calculator.ui", self)
         self.init_buttons()
-        self.operatorslist = ["+", "-", "*", "/"]
+        self.operatorslist = ["+", "-", "*", "/", "."]
         self.numberslist = ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9"]
         self.resultup = False
 
     # initializes all buttons
     def init_buttons(self):
-        self.ui.zeroButton.clicked.connect(lambda x: self.on_numbutton('0', "button: "))
-        self.ui.oneButton.clicked.connect(lambda x: self.on_numbutton('1', "button: "))
-        self.ui.twoButton.clicked.connect(lambda x: self.on_numbutton('2', "button: "))
-        self.ui.threeButton.clicked.connect(lambda x: self.on_numbutton('3', "button: "))
-        self.ui.fourButton.clicked.connect(lambda x: self.on_numbutton('4', "button: "))
-        self.ui.fiveButton.clicked.connect(lambda x: self.on_numbutton('5', "button: "))
-        self.ui.sixButton.clicked.connect(lambda x: self.on_numbutton('6', "button: "))
-        self.ui.sevenButton.clicked.connect(lambda x: self.on_numbutton('7', "button: "))
-        self.ui.eigthButton.clicked.connect(lambda x: self.on_numbutton('8', "button: "))
-        self.ui.nineButton.clicked.connect(lambda x: self.on_numbutton('9', "button: "))
-        self.ui.plusButton.clicked.connect(lambda x: self.on_mathbutton('+', "button: "))
-        self.ui.multButton.clicked.connect(lambda x: self.on_mathbutton('*', "button: "))
-        self.ui.minusButton.clicked.connect(lambda x: self.on_mathbutton('-', "button: "))
-        self.ui.divButton.clicked.connect(lambda x: self.on_mathbutton('/', "button: "))
-        self.ui.equalButton.clicked.connect(lambda x: self.on_equalbutton("button: ="))
-        self.ui.cButton.clicked.connect(lambda x: self.on_cbutton("button: c"))
-        self.ui.ceButton.clicked.connect(lambda x: self.on_cebutton("button: ce"))
+        self.ui.zeroButton.clicked.connect(lambda x: self.on_numbutton('0', "button: ", self.timestamp()))
+        self.ui.oneButton.clicked.connect(lambda x: self.on_numbutton('1', "button: ", self.timestamp()))
+        self.ui.twoButton.clicked.connect(lambda x: self.on_numbutton('2', "button: ", self.timestamp()))
+        self.ui.threeButton.clicked.connect(lambda x: self.on_numbutton('3', "button: ", self.timestamp()))
+        self.ui.fourButton.clicked.connect(lambda x: self.on_numbutton('4', "button: ", self.timestamp()))
+        self.ui.fiveButton.clicked.connect(lambda x: self.on_numbutton('5', "button: ", self.timestamp()))
+        self.ui.sixButton.clicked.connect(lambda x: self.on_numbutton('6', "button: ", self.timestamp()))
+        self.ui.sevenButton.clicked.connect(lambda x: self.on_numbutton('7', "button: ", self.timestamp()))
+        self.ui.eigthButton.clicked.connect(lambda x: self.on_numbutton('8', "button: ", self.timestamp()))
+        self.ui.nineButton.clicked.connect(lambda x: self.on_numbutton('9', "button: ", self.timestamp()))
+        self.ui.plusButton.clicked.connect(lambda x: self.on_mathbutton('+', "button: ", self.timestamp()))
+        self.ui.multButton.clicked.connect(lambda x: self.on_mathbutton('*', "button: ", self.timestamp()))
+        self.ui.minusButton.clicked.connect(lambda x: self.on_mathbutton('-', "button: ", self.timestamp()))
+        self.ui.divButton.clicked.connect(lambda x: self.on_mathbutton('/', "button: ", self.timestamp()))
+        self.ui.pointButton.clicked.connect(lambda x: self.on_mathbutton('.', "button: ", self.timestamp()))
+        self.ui.equalButton.clicked.connect(lambda x: self.on_equalbutton("button: =", self.timestamp()))
+        self.ui.cButton.clicked.connect(lambda x: self.on_cbutton("button: c", self.timestamp()))
+        self.ui.ceButton.clicked.connect(lambda x: self.on_cebutton("button: ce", self.timestamp()))
+
+
+    def timestamp(self):
+        return QtCore.QDateTime.currentDateTime().toString(QtCore.Qt.ISODate)
 
     # adds number to output, deletes result if a result is shown (logmsg only used for decorator function)
     @decorator
-    def on_numbutton(self, key, logmsg):
+    def on_numbutton(self, key, logmsg, timestamp):
 
         if self.resultup:
             self.resultup = False
@@ -61,7 +69,7 @@ class UI(QtWidgets.QMainWindow):
 
     # adds operator to output, but only if no other operator was pressed beforehand (logmsg only used for decorator function)
     @decorator
-    def on_mathbutton(self, key, logmsg):
+    def on_mathbutton(self, key, logmsg, timestamp):
         if self.resultup:
             self.resultup = False
         if self.ui.outputlabel.text()[-1] in self.operatorslist:
@@ -71,7 +79,7 @@ class UI(QtWidgets.QMainWindow):
 
     # prints result,  only shows 3 decimal places so the result is still readable (logmsg only used for decorator function)
     @decorator
-    def on_equalbutton(self, logmsg):
+    def on_equalbutton(self, logmsg, timestamp):
         if self.ui.outputlabel.text()[-1] in self.operatorslist:
             print("Can't end on an operator you can use ce or backspace to undo the last button press")
         else:
@@ -82,17 +90,20 @@ class UI(QtWidgets.QMainWindow):
             except ZeroDivisionError:
                 print("Stop dividing by Zero!")
                 self.ui.outputlabel.setText("")
+            except SyntaxError:
+                print("invalid syntax")
+                self.ui.outputlabel.setText("")
 
     # deletes the entire output (logmsg only used for decorator function)
     @decorator
-    def on_cbutton(self, logmsg):
+    def on_cbutton(self, logmsg, timestamp):
         if self.resultup:
             self.resultup = False
         self.ui.outputlabel.setText("0")
 
     # deletes last input, or reverts output to 0 if there is only a single digit or if a result is shown (logmsg only used for decorator function)
     @decorator
-    def on_cebutton(self, logmsg):
+    def on_cebutton(self, logmsg, timestamp):
         if self.resultup:
             self.resultup = False
             self.ui.outputlabel.setText("0")
