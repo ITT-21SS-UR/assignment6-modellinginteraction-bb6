@@ -1,22 +1,27 @@
 
+
+"""
+used kay brinkmanns calculator script for assignment 2 as basis
+all changes to script have been done by Joshua Benker
+"""
+
+
 from PyQt5 import QtCore, QtGui, QtWidgets, uic
+import time
 import pandas as pd
 import sys
 
 
-
 # decorator function for logging to stdout
-# (not a very pretty implementation, but only thought of them when i was done with the rest)
 def decorator(func):
     def inner(*args, **kwargs):
         if len(args) > 3:
-            sys.stdout.write(args[2] + args[1] + ", " + args[3]  + "\n")
+            sys.stdout.write(args[2] + args[1] + ", " + args[3] + "\n")
         else:
-            sys.stdout.write(args[1] + ", " + args[2]+ "\n")
+            sys.stdout.write(args[1] + ", " + args[2] + "\n")
         func(*args, **kwargs)
 
     return inner
-
 
 
 class UI(QtWidgets.QMainWindow):
@@ -51,9 +56,8 @@ class UI(QtWidgets.QMainWindow):
         self.ui.cButton.clicked.connect(lambda x: self.on_cbutton("button: c", self.timestamp()))
         self.ui.ceButton.clicked.connect(lambda x: self.on_cebutton("button: ce", self.timestamp()))
 
-
     def timestamp(self):
-        return QtCore.QDateTime.currentDateTime().toString(QtCore.Qt.ISODate)
+        return str(time.time())
 
     # adds number to output, deletes result if a result is shown (logmsg only used for decorator function)
     @decorator
@@ -67,7 +71,8 @@ class UI(QtWidgets.QMainWindow):
                 self.ui.outputlabel.setText("")
             self.ui.outputlabel.setText(self.ui.outputlabel.text() + key)
 
-    # adds operator to output, but only if no other operator was pressed beforehand (logmsg only used for decorator function)
+    # adds operator to output, but only if no other operator was pressed beforehand
+    # (logmsg only used for decorator function)
     @decorator
     def on_mathbutton(self, key, logmsg, timestamp):
         if self.resultup:
@@ -77,7 +82,8 @@ class UI(QtWidgets.QMainWindow):
         else:
             self.ui.outputlabel.setText(self.ui.outputlabel.text() + key)
 
-    # prints result,  only shows 3 decimal places so the result is still readable (logmsg only used for decorator function)
+    # prints result,  only shows 3 decimal places so the result is still readable
+    # (logmsg only used for decorator function)
     @decorator
     def on_equalbutton(self, logmsg, timestamp):
         if self.ui.outputlabel.text()[-1] in self.operatorslist:
@@ -101,7 +107,8 @@ class UI(QtWidgets.QMainWindow):
             self.resultup = False
         self.ui.outputlabel.setText("0")
 
-    # deletes last input, or reverts output to 0 if there is only a single digit or if a result is shown (logmsg only used for decorator function)
+    # deletes last input, or reverts output to 0 if there is only a single digit or if a result is shown
+    # (logmsg only used for decorator function)
     @decorator
     def on_cebutton(self, logmsg, timestamp):
         if self.resultup:
@@ -116,15 +123,15 @@ class UI(QtWidgets.QMainWindow):
     # assigns keypress events to their respective functions
     def keyPressEvent(self, event):
         if event.text() in self.numberslist:
-            self.on_numbutton(event.text(), "keystroke: ")
+            self.on_numbutton(event.text(), "keystroke: ", self.timestamp())
         elif event.text() in self.operatorslist:
-            self.on_mathbutton(event.text(), "keystroke: ")
+            self.on_mathbutton(event.text(), "keystroke: ", self.timestamp())
         elif event.key() == QtCore.Qt.Key_Backspace:
-            self.on_cebutton("keystroke: backspace")
+            self.on_cebutton("keystroke: backspace", self.timestamp())
         elif event.key() == QtCore.Qt.Key_Delete:
-            self.on_cbutton("keystroke: delete")
+            self.on_cbutton("keystroke: delete", self.timestamp())
         elif event.key() == QtCore.Qt.Key_Return:
-            self.on_equalbutton("keystroke: return")
+            self.on_equalbutton("keystroke: return", self.timestamp())
 
 
 if __name__ == "__main__":

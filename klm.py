@@ -1,8 +1,29 @@
-# This Python file uses the following encoding: utf-8
+
+"""
+Pass setup.json file on start up
+File should look like this
+{
+    "k": 0.28,
+    "p": 1.1,
+    "h": 0.4,
+    "b": 0.1,
+    "m": 1.35,
+    "operator_file": "klm.txt"
+}
+all single characters are the time values for operators, can be changed as needed, as long as they match the operators
+used in the operator_file
+operator_file should be a text file containing the all operators used for the task (i.e: k2bp2bh8k). Operators can be
+split up in multiple lines and can contain comments prefixed with a #
+
+Script by Kay Brinkmann
+"""
+
+
 import sys
 import json
 
 
+# turn file with task operators into string without whitespaces
 def file_to_klm_string(filename):
     klm_string = ""
     try:
@@ -18,10 +39,12 @@ def file_to_klm_string(filename):
     return klm_string.replace(" ", "").lower()
 
 
+# calculates task time
 def calculate_klm_time(klm_model, klm_string):
     numbers = ""
     result = 0
     for char in klm_string:
+        # save digits as prefixes for following operator
         if char.isdigit():
             numbers += char
         else:
@@ -30,7 +53,7 @@ def calculate_klm_time(klm_model, klm_string):
             except KeyError:
                 print(char, ' character does not match any klm operator. Check your klm file.')
                 return
-
+            # multiply by prefixed number if it exists
             if len(numbers) > 0:
                 operator_number *= float(numbers)
                 numbers = ""
@@ -38,6 +61,7 @@ def calculate_klm_time(klm_model, klm_string):
     return result
 
 
+# parses json file to dict
 def parse_config(file):
     try:
         with open(str(file)) as f:
