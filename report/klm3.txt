@@ -2,4 +2,4 @@ pbbpbbpbb # 3 * 3 (calculator can't square)
 pbb # +
 pbbpbbpbb # 4 * 4
 pbb # = (calculator has no input for brackets)
-pbb pbb pbb pbb pbb pbb # * 15.2 =
+pbb pbbpbbpbbpbbpbb pbb # * 15.2 =
