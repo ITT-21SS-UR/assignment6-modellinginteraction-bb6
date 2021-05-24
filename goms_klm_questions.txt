@@ -1,0 +1,13 @@
+a) What does the term "critical path" describe with regard to GOMS?
+
+
+
+
+b) Why might the original KLM not perfectly model input performance on a laptop? How could it be adapted?
+
+The difference with a laptop is that a trackpad instead of a mouse is used. This can change
+the estimated KLM values. A Trackpad is much closer to the keyboard than a mouse which is 
+usually placed on the left or right side to the keyboard. With a laptop it is possible to 
+use the trackpad with your thumbs and simultaneously writing on the keyboard without having 
+to move from the trackpad. To adapt the KLM to a laptop, it would be neccesary to conduct 
+an additional study to estimate the KLM values. 
