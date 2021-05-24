@@ -32,11 +32,9 @@ def file_to_klm_string(filename):
         return []
     lines = file.readlines()
     for line in lines:
-        split = line.split("#", 1)
-        new_line = split[0]
+        new_line = line.split("#", 1)[0].rstrip().lower()
         klm_string += new_line
-
-    return klm_string.replace(" ", "").lower()
+    return klm_string
 
 
 # calculates task time
@@ -82,7 +80,7 @@ def main():
     except Exception as e:
         print(e, ": could not read operator file!")
         sys.exit()
-    print("klm string: ", file_to_klm_string("klm.txt"))
+    print("klm string: ", klm_string)
     print("Expected task completion time = ", calculate_klm_time(klm_dict, klm_string))
 
 
