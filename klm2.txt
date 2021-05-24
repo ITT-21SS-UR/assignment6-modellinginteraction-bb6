@@ -1,0 +1,3 @@
+18k # KLM operators for 1 + 2 + ... + 9 +
+33k # add keypress for extra digit for 10 + 11 + ... 20 =
+

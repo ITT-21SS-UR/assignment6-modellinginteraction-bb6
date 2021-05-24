@@ -1,0 +1,20 @@
+pbbpbb # KLM operators for 1 +
+pbbpbb # repeat this 9 times
+pbbpbb
+pbbpbb
+pbbpbb
+pbbpbb
+pbbpbb
+pbbpbb
+pbbpbb
+pbbpbbpbb # add pointing and mousepress for extra digit
+pbbpbbpbb # repeat this 10 more times
+pbbpbbpbb
+pbbpbbpbb
+pbbpbbpbb
+pbbpbbpbb
+pbbpbbpbb
+pbbpbbpbb
+pbbpbbpbb
+pbbpbbpbb
+pbbpbbpbb # finishes with 20 =

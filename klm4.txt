@@ -1,0 +1,2 @@
+# input is: 3 * 3 + 4 * 4 = 15.2 (calculator can't square or use brackets) 
+12k # one keystroke for each character
