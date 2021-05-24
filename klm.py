@@ -32,7 +32,7 @@ def file_to_klm_string(filename):
         return []
     lines = file.readlines()
     for line in lines:
-        new_line = line.split("#", 1)[0].rstrip().lower()
+        new_line = line.split("#", 1)[0].replace(" ", "").rstrip().lower()
         klm_string += new_line
     return klm_string
 
