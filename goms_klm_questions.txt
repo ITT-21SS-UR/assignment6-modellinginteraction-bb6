@@ -1,7 +1,12 @@
+Question as answered by Kay Brinkmann, Question B answered by Joshua Benker
+
 a) What does the term "critical path" describe with regard to GOMS?
 
-
-
+The "critical path method" is used for calculating task times for complex tasks that contain multiple,
+parallel activities. The "critical path" has a similar meaning as used in project management, and as such
+described the sequence of activities in a task which takes the longest time out of all sequences.
+Calculating/ measuring the time it takes to complete this sequence can be used as the task time
+of the entire task.
 
 b) Why might the original KLM not perfectly model input performance on a laptop? How could it be adapted?
 
